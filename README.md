@@ -1,6 +1,6 @@
 # UI Testing Playground with Playwright
 
-This project contains automated tests for [UI Testing Playground](http://uitestingplayground.com/) using Playwright test framework.
+This project contains automated tests for [UI Testing Playground](http://uitestingplayground.com/) & [Expand Testing](https://practice.expandtesting.com/login) using Playwright test framework.
 
 ## Prerequisites
 
