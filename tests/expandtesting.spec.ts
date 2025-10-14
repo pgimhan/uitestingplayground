@@ -14,3 +14,42 @@ test('Web Input', async ({ page }) => {
     await expect(page.locator('#output-password')).toHaveText('pwd#456161');
     await expect(page.locator('#output-date')).toHaveText('2026-05-27');
 });
+
+test.describe('Login Page Scenarios', () => {
+
+    test.beforeEach(async ({ page }) => {
+        await page.goto('https://practice.expandtesting.com/login');
+    });
+
+    test('Successfull login', async ({ page }) => {
+        await page.getByLabel('Username').fill('practice');
+        await page.getByLabel('password').fill('SuperSecretPassword!');
+        await page.getByRole('button', { name: 'Login' }).click();
+
+        expect(page.url()).toEqual('https://practice.expandtesting.com/secure');
+        console.log('user is redirected to the /secure page.');
+        await expect(page.locator('#flash')).toHaveText('You logged into a secure area!');
+        console.log('"You logged into a secure area!" is visible.');
+    });
+
+    test('Invalid username', async ({ page }) => {
+        await page.getByLabel('Username').fill('user123');
+        await page.getByLabel('password').fill('SuperSecretPassword!');
+        await page.getByRole('button', { name: 'Login' }).click();
+
+        const errorMessage = await page.locator('#flash b').textContent();
+        expect(errorMessage).toEqual('Invalid username.');
+        // This test case is failed sceanrio.
+    });
+
+    test('Invalid password', async ({ page }) => {
+        await page.getByLabel('Username').fill('practice');
+        await page.getByLabel('password').fill('pwd12345');
+        await page.getByRole('button', { name: 'Login' }).click();
+
+        const errorMessage = await page.locator('#flash b').textContent();
+        expect(errorMessage).toEqual('Your password is invalid!');
+        console.log('Your password is invalid! is showing');
+
+    });
+});
