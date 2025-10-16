@@ -52,4 +52,21 @@ test.describe('Login Page Scenarios', () => {
         console.log('Your password is invalid! is showing');
 
     });
+
+    test.describe('Register user scenarios', () => {
+        test.beforeEach(async ({ page }) => {
+            page.goto('https://practice.expandtesting.com/register');
+        });
+
+        test('invalid registor process', async ({ page }) => {
+            await page.getByLabel('Username').fill('user12');
+            await page.getByLabel('Password', { exact: true }).fill('123');
+            await page.getByLabel('Confirm Password', { exact: true }).fill('123');
+            await page.getByRole('button', { name: 'Register' }).click();
+
+            const errorMessage = await page.locator('#flash b').textContent();
+            expect(errorMessage).toEqual('Password must be at least 4 characters long.');
+        });
+
+    });
 });
